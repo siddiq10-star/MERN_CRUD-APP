@@ -11,10 +11,10 @@ function Create() {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("https://685c05a389952852c2dbeb19.mockapi.io/crud", {
-        c_name: name,
-        c_age: age,
-        c_email: email,
+      .post("http://localhost:8000/api/website/crud/insert", {
+        name,
+        age,
+        email,
       })
       .then((res) => {
         setName("");

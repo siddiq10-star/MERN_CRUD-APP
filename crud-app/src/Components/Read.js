@@ -5,23 +5,21 @@ import { Link } from "react-router-dom";
 function Read() {
   const [data, setData] = useState([]);
   function getData() {
-    Axios.get("https://685c05a389952852c2dbeb19.mockapi.io/crud").then(
-      (res) => {
-        setData(res.data);
-      }
-    );
+    Axios.get("http://localhost:8000/api/website/crud/read").then((res) => {
+      setData(res.data.data);
+    });
   }
 
   const handleDelete = (id) => {
-    Axios.delete(`https://685c05a389952852c2dbeb19.mockapi.io/crud/${id}`).then(
+    Axios.delete(`http://localhost:8000/api/website/crud/delete/${id}`).then(
       (res) => {
         getData();
       }
     );
   };
 
-  const setDataToStorage = (id, name, age, email) => {
-    localStorage.setItem("id", id);
+  const setDataToStorage = (_id, name, age, email) => {
+    localStorage.setItem("id", _id);
     localStorage.setItem("name", name);
     localStorage.setItem("age", age);
     localStorage.setItem("email", email);
@@ -58,20 +56,20 @@ function Read() {
                 return (
                   <>
                     <tr>
-                      <td>{item.id}</td>
-                      <td>{item.c_name}</td>
-                      <td>{item.c_age}</td>
-                      <td>{item.c_email}</td>
+                      <td>{item._id}</td>
+                      <td>{item.name}</td>
+                      <td>{item.age}</td>
+                      <td>{item.email}</td>
                       <td>
                         <Link to={"/edit"}>
                           <button
                             className="btn btn-primary"
                             onClick={() =>
                               setDataToStorage(
-                                item.id,
-                                item.c_name,
-                                item.c_age,
-                                item.c_email
+                                item._id,
+                                item.name,
+                                item.age,
+                                item.email
                               )
                             }
                           >
@@ -84,7 +82,7 @@ function Read() {
                           className="btn btn-danger"
                           onClick={() => {
                             if (window.confirm("Are you sure"))
-                              handleDelete(item.id);
+                              handleDelete(item._id);
                           }}
                         >
                           Delete

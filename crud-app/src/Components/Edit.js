@@ -14,15 +14,15 @@ function Edit() {
     setName(localStorage.getItem("name"));
     setAge(localStorage.getItem("age"));
     setEmail(localStorage.getItem("email"));
-  },[]);
+  }, []);
 
   const handleUpdate = (e) => {
     e.preventDefault();
     axios
-      .put(`https://685c05a389952852c2dbeb19.mockapi.io/crud/${id}`, {
-        c_name: name,
-        c_age: age,
-        c_email: email,
+      .put(`http://localhost:8000/api/website/crud/update/${id}`, {
+        name,
+        age,
+        email,
       })
       .then((res) => {
         setName("");
