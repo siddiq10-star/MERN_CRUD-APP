@@ -81,9 +81,6 @@ GET	/api/website/crud/read	Get all records
 DELETE	/api/website/crud/delete/:id	Delete a record
 PUT	/api/website/crud/updateData/:id	Update a record
 
-📸 Screenshots
-(Add screenshots of your UI here if needed)
-
 📜 License
 This project is open-source and free to use under the MIT License.
 
