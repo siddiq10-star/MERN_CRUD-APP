@@ -13,16 +13,20 @@ app.use(cors());
 app.use("/api/website/crud", crudRouter);
 
 // Connection to Db
-mongoose
-  .connect(process.env.DBURL)
-  .then(() => {
+const startServer = async () => {
+  try {
+    await mongoose.connect(process.env.DBURL);
     console.log("✅ Connected to MongoDB");
-    app.listen(process.env.PORT, () => {
-      console.log(
-        "🚀 Server is running on http://localhost:" + process.env.PORT
-      );
+
+    const PORT = process.env.PORT || 8000;
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running on port ${PORT}`);
     });
-  })
-  .catch((err) => {
+
+  } catch (err) {
     console.error("❌ MongoDB connection failed:", err.message);
-  });
+    process.exit(1);
+  }
+};
+
+startServer();
