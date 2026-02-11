@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
+
 import axios from "axios";
 import { Link } from "react-router-dom";
 
@@ -7,14 +8,16 @@ function Read() {
   const API_URL = process.env.REACT_APP_API_URL;
 
   // ✅ Define getData properly
-  const getData = async () => {
-    try {
-      const res = await axios.get(`${API_URL}/api/website/crud/read`);
-      setData(res.data.data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  const getData = useCallback(async () => {
+  try {
+    const res = await axios.get(
+      `${API_URL}/api/website/crud/read`
+    );
+    setData(res.data.data);
+  } catch (err) {
+    console.log(err);
+  }
+}, [API_URL]);
 
   // ✅ Delete function
   const handleDelete = async (id) => {
@@ -34,8 +37,8 @@ function Read() {
   };
 
   useEffect(() => {
-    getData();
-  }, []); // ✅ no warning now
+  getData();
+}, [getData]);
 
   return (
     <div>
