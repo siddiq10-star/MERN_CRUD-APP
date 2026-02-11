@@ -11,7 +11,7 @@ function Create() {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:8000/api/website/crud/insert", {
+      .post(`${process.env.REACT_APP_API_URL}/api/website/crud/insert`, {
         name,
         age,
         email,

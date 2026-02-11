@@ -19,7 +19,7 @@ function Edit() {
   const handleUpdate = (e) => {
     e.preventDefault();
     axios
-      .put(`http://localhost:8000/api/website/crud/update/${id}`, {
+      .put(`${process.env.REACT_APP_API_URL}/api/website/crud/update/${id}`, {
         name,
         age,
         email,

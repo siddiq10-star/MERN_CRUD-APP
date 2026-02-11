@@ -1,21 +1,29 @@
 import React, { useEffect, useState } from "react";
-import Axios from "axios";
+import axios from "axios";
 import { Link } from "react-router-dom";
 
 function Read() {
   const [data, setData] = useState([]);
-  function getData() {
-    Axios.get("http://localhost:8000/api/website/crud/read").then((res) => {
-      setData(res.data.data);
-    });
-  }
+  const API_URL = process.env.REACT_APP_API_URL;
 
-  const handleDelete = (id) => {
-    Axios.delete(`http://localhost:8000/api/website/crud/delete/${id}`).then(
-      (res) => {
-        getData();
-      }
-    );
+  // ✅ Define getData properly
+  const getData = async () => {
+    try {
+      const res = await axios.get(`${API_URL}/api/website/crud/read`);
+      setData(res.data.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  // ✅ Delete function
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`${API_URL}/api/website/crud/delete/${id}`);
+      getData(); // refresh list
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const setDataToStorage = (_id, name, age, email) => {
@@ -27,7 +35,8 @@ function Read() {
 
   useEffect(() => {
     getData();
-  }, []);
+  }, []); // ✅ no warning now
+
   return (
     <div>
       <div className="row">
@@ -35,11 +44,13 @@ function Read() {
           <div className="bg-primary text-center">
             <h1>CRUD Operations</h1>
           </div>
+
           <div className="mb-2 mt-2">
-            <Link to={"/create"}>
+            <Link to="/create">
               <button className="btn btn-primary">Create New Data</button>
             </Link>
           </div>
+
           <table className="table table-bordered table-striped table-hover table-dark">
             <thead>
               <tr>
@@ -52,46 +63,45 @@ function Read() {
               </tr>
             </thead>
             <tbody>
-              {data.map((item) => {
-                return (
-                  <>
-                    <tr>
-                      <td>{item._id}</td>
-                      <td>{item.name}</td>
-                      <td>{item.age}</td>
-                      <td>{item.email}</td>
-                      <td>
-                        <Link to={"/edit"}>
-                          <button
-                            className="btn btn-primary"
-                            onClick={() =>
-                              setDataToStorage(
-                                item._id,
-                                item.name,
-                                item.age,
-                                item.email
-                              )
-                            }
-                          >
-                            Edit
-                          </button>
-                        </Link>
-                      </td>
-                      <td>
-                        <button
-                          className="btn btn-danger"
-                          onClick={() => {
-                            if (window.confirm("Are you sure"))
-                              handleDelete(item._id);
-                          }}
-                        >
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                  </>
-                );
-              })}
+              {data.map((item) => (
+                <tr key={item._id}>
+                  <td>{item._id}</td>
+                  <td>{item.name}</td>
+                  <td>{item.age}</td>
+                  <td>{item.email}</td>
+
+                  <td>
+                    <Link to="/edit">
+                      <button
+                        className="btn btn-primary"
+                        onClick={() =>
+                          setDataToStorage(
+                            item._id,
+                            item.name,
+                            item.age,
+                            item.email,
+                          )
+                        }
+                      >
+                        Edit
+                      </button>
+                    </Link>
+                  </td>
+
+                  <td>
+                    <button
+                      className="btn btn-danger"
+                      onClick={() => {
+                        if (window.confirm("Are you sure?")) {
+                          handleDelete(item._id);
+                        }
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
