@@ -8,11 +8,15 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-//Routes
+// ✅ ADD THIS
+app.get("/", (req, res) => {
+  res.send("Backend is running successfully 🚀");
+});
 
+// API Routes
 app.use("/api/website/crud", crudRouter);
 
-// Connection to Db
+// DB Connection
 const startServer = async () => {
   try {
     await mongoose.connect(process.env.DBURL);
